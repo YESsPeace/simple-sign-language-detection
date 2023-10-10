@@ -5,7 +5,7 @@ import time
 import os
 
 # Подключаем камеру
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(7)  # for no reason my webcam is by number 7
 cap.set(3, 640)  # Width
 cap.set(4, 480)  # Lenght
 cap.set(10, 100)  # Brightness
@@ -17,10 +17,12 @@ npDraw = mp.solutions.drawing_utils
 pTime = 0
 cTime = 0
 
-# Зацикливаем получение кадров от камеры
 while True:
     success, img = cap.read()
     img = cv2.flip(img, 1)  # Mirror flip
+
+    cv2.putText(img, 'Wonna quite? Press "ESC" ! :)', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3,
+                cv2.LINE_AA)
 
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = hands.process(imgRGB)
@@ -38,7 +40,7 @@ while True:
     cTime = time.time()
     fps = 1 / (cTime - pTime)
     pTime = cTime
-    cv2.putText(img, str(int(fps)), (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)  # ФреймРейт
+    cv2.putText(img, str(int(fps)), (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)  # framerate
 
     cv2.imshow('python', img)
     if cv2.waitKey(20) == 27:  # exit on ESC
