@@ -28,9 +28,9 @@ for dir_ in os.listdir(DATA_DIR):
                 for i in range(len(hand_landmarks.landmark)):
                     x = hand_landmarks.landmark[i].x
                     y = hand_landmarks.landmark[i].y
-                    z = hand_landmarks.landmark[i].z
+                    # z = hand_landmarks.landmark[i].z
 
-                    data_aux.extend((x, y, z))
+                    data_aux.extend((x, y))
 
             data.append(data_aux)
             labels.append(dir_)
