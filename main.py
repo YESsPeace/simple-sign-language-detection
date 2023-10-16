@@ -3,10 +3,7 @@ import time
 
 import cv2
 import mediapipe as mp
-
 import numpy as np
-import pandas as pd
-from sklearn.preprocessing import StandardScaler
 
 # importing the ML model
 model = pickle.load(open('model.pickle', 'rb'))
@@ -42,6 +39,23 @@ signs_dict = {
     13: 'YessPeace inv',
 }
 
+interface_signs_dict = {
+    0: 'Like',
+    1: 'Like',
+    2: 'Like',
+    3: 'Dislike',
+    4: 'Dislike',
+    5: 'Dislike',
+    6: 'Ok',
+    7: 'Ok',
+    8: 'Peace',
+    9: 'Peace',
+    10: 'Rock',
+    11: 'Rock',
+    12: 'YessPeace',
+    13: 'YessPeace',
+}
+
 while True:
     ret, frame = cap.read()
 
@@ -66,6 +80,7 @@ while True:
         x_ = []
         y_ = []
 
+        # getting data from hand_landmarks
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(
                 frame,  # image to draw
@@ -75,6 +90,7 @@ while True:
                 mp_drawing_styles.get_default_hand_connections_style(),
             )
 
+            # getting all coordinates of hands landmarks
             for i in range(len(hand_landmarks.landmark)):
                 x = hand_landmarks.landmark[i].x
                 y = hand_landmarks.landmark[i].y
@@ -82,32 +98,54 @@ while True:
                 x_.append(x)
                 y_.append(y)
 
+            # getting relative coordinates of hands landmarks
             for i in range(len(hand_landmarks.landmark)):
                 x = hand_landmarks.landmark[i].x
                 y = hand_landmarks.landmark[i].y
                 inputs.append(x - min(x_))
                 inputs.append(y - min(y_))
 
-            x1 = int(min(x_) * W) - 10
-            y1 = int(min(y_) * H) - 10
-
-            x2 = int(max(x_) * W) - 10
-            y2 = int(max(y_) * H) - 10
-
+        # preparing data for the model
         inputs = np.array(inputs).reshape(1, -1)
 
         if len(inputs[0]) > 41:
             inputs = [inputs[0][:42]]
 
+        # getting model prediction
         prediction = int(model.predict(inputs)[0])
 
         print(signs_dict[prediction])
 
+        # making the interface
+        x1 = int(min(x_) * W) - 15
+        y1 = int(min(y_) * H) - 15
+
+        x2 = int(max(x_) * W) + 15
+        y2 = int(max(y_) * H) + 15
+
+        cv2.rectangle(
+            frame,
+            (x1, y1), (x2, y2),
+            color=(48, 186, 143)[::-1],
+            thickness=3,
+        )
+
+        cv2.putText(
+            img=frame,
+            text=interface_signs_dict[prediction],
+            org=(x1, y1 - 10),
+            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+            fontScale=1,
+            color=(48, 186, 143)[::-1],
+            thickness=2,
+            lineType=cv2.LINE_AA
+        )
+
+    # getting the framerate
     current_time = time.time()
     fps = 1 / (current_time - previous_time)
     previous_time = current_time
 
-    # framerate
     cv2.putText(
         img=frame,
         text=str(int(fps)),
@@ -118,6 +156,7 @@ while True:
         thickness=2,
     )
 
+    # showing the image
     cv2.imshow('python', frame)
     if cv2.waitKey(20) == 27:  # exit on ESC
         break
