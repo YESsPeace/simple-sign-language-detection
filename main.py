@@ -26,13 +26,20 @@ pTime = 0
 cTime = 0
 
 signs_dict = {
-    'nothing': 'random_sign',
-    0: 'like',
-    1: 'Dislike',
-    2: 'Ok',
-    3: 'Peace',
-    4: 'Rock',
-    5: 'YessPeace',
+    0: 'Like',
+    1: 'Like front',
+    2: 'Like inv',
+    3: 'Dislike',
+    4: 'Dislike front',
+    5: 'Dislike inv',
+    6: 'Ok',
+    7: 'Ok inv',
+    8: 'Peace',
+    9: 'Peace inv',
+    10: 'Rock',
+    11: 'Rock inv',
+    12: 'YessPeace',
+    13: 'YessPeace inv',
 }
 
 while True:
