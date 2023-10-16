@@ -44,7 +44,6 @@ signs_dict = {
 
 while True:
     ret, frame = cap.read()
-    frame = cv2.flip(frame, 1)  # Mirror flip
 
     H, W, _ = frame.shape
 
