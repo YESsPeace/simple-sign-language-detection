@@ -22,8 +22,8 @@ hands = mp_hands.Hands(False)
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-pTime = 0
-cTime = 0
+previous_time = 0
+current_time = 0
 
 signs_dict = {
     0: 'Like',
@@ -103,10 +103,20 @@ while True:
 
         print(signs_dict[prediction])
 
-    cTime = time.time()
-    fps = 1 / (cTime - pTime)
-    pTime = cTime
-    cv2.putText(frame, str(int(fps)), (10, 30), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)  # framerate
+    current_time = time.time()
+    fps = 1 / (current_time - previous_time)
+    previous_time = current_time
+
+    # framerate
+    cv2.putText(
+        img=frame,
+        text=str(int(fps)),
+        org=(10, 30),
+        fontFace=cv2.FONT_HERSHEY_PLAIN,
+        fontScale=2,
+        color=(68, 148, 74)[::-1],
+        thickness=2,
+    )
 
     cv2.imshow('python', frame)
     if cv2.waitKey(20) == 27:  # exit on ESC
