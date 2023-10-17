@@ -76,12 +76,13 @@ while True:
     )
 
     if results.multi_hand_landmarks:  # if we have any hands
-        inputs = []  # data which model will predict
-        x_ = []
-        y_ = []
 
         # getting data from hand_landmarks
         for hand_landmarks in results.multi_hand_landmarks:
+            inputs = []  # data which model will predict
+            x_ = []
+            y_ = []
+
             mp_drawing.draw_landmarks(
                 frame,  # image to draw
                 hand_landmarks,  # model output
@@ -105,41 +106,41 @@ while True:
                 inputs.append(x - min(x_))
                 inputs.append(y - min(y_))
 
-        # preparing data for the model
-        inputs = np.array(inputs).reshape(1, -1)
+            # preparing data for the model
+            inputs = np.array(inputs).reshape(1, -1)
 
-        if len(inputs[0]) > 41:
-            inputs = [inputs[0][:42]]
+            if len(inputs[0]) > 41:
+                inputs = [inputs[0][:42]]
 
-        # getting model prediction
-        prediction = int(model.predict(inputs)[0])
+            # getting model prediction
+            prediction = int(model.predict(inputs)[0])
 
-        print(signs_dict[prediction])
+            print(signs_dict[prediction])
 
-        # making the interface
-        x1 = int(min(x_) * W) - 15
-        y1 = int(min(y_) * H) - 15
+            # making the interface
+            x1 = int(min(x_) * W) - 15
+            y1 = int(min(y_) * H) - 15
 
-        x2 = int(max(x_) * W) + 15
-        y2 = int(max(y_) * H) + 15
+            x2 = int(max(x_) * W) + 15
+            y2 = int(max(y_) * H) + 15
 
-        cv2.rectangle(
-            frame,
-            (x1, y1), (x2, y2),
-            color=(48, 186, 143)[::-1],
-            thickness=3,
-        )
+            cv2.rectangle(
+                frame,
+                (x1, y1), (x2, y2),
+                color=(48, 186, 143)[::-1],
+                thickness=3,
+            )
 
-        cv2.putText(
-            img=frame,
-            text=interface_signs_dict[prediction],
-            org=(x1, y1 - 10),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=1,
-            color=(48, 186, 143)[::-1],
-            thickness=2,
-            lineType=cv2.LINE_AA
-        )
+            cv2.putText(
+                img=frame,
+                text=interface_signs_dict[prediction],
+                org=(x1, y1 - 10),
+                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                fontScale=1,
+                color=(48, 186, 143)[::-1],
+                thickness=2,
+                lineType=cv2.LINE_AA
+            )
 
     # getting the framerate
     current_time = time.time()
