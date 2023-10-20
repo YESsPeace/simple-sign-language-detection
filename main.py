@@ -23,37 +23,21 @@ previous_time = 0
 current_time = 0
 
 signs_dict = {
-    0: 'Like',
-    1: 'Like front',
-    2: 'Like inv',
-    3: 'Dislike',
-    4: 'Dislike front',
-    5: 'Dislike inv',
-    6: 'Ok',
-    7: 'Ok inv',
-    8: 'Peace',
-    9: 'Peace inv',
-    10: 'Rock',
-    11: 'Rock inv',
-    12: 'YessPeace',
-    13: 'YessPeace inv',
-}
-
-interface_signs_dict = {
-    0: 'Like',
-    1: 'Like',
-    2: 'Like',
-    3: 'Dislike',
-    4: 'Dislike',
-    5: 'Dislike',
-    6: 'Ok',
-    7: 'Ok',
-    8: 'Peace',
-    9: 'Peace',
-    10: 'Rock',
-    11: 'Rock',
-    12: 'YessPeace',
-    13: 'YessPeace',
+    '0': 'Like',
+    '1': 'Like front',
+    '2': 'Dislike',
+    '3': 'Dislike front',
+    '4': 'Ok',
+    '5': 'Peace',
+    '6': 'Rock',
+    '7': 'YessPeace sign',
+    '8': 'Shaka',
+    '9': 'Fuck',
+    '10': 'Spock',
+    '11': 'West Coast',
+    '12': 'East Coast',
+    '13': 'Crips',
+    '14': 'Bloods',
 }
 
 while True:
@@ -113,9 +97,10 @@ while True:
                 inputs = [inputs[0][:42]]
 
             # getting model prediction
-            prediction = int(model.predict(inputs)[0])
+            prediction = model.predict(inputs)[0]
+            sign_name = signs_dict[prediction.split('_')[0]]
 
-            print(signs_dict[prediction])
+            print('Predicted sign:', 'code:', prediction, 'name:', sign_name)
 
             # making the interface
             x1 = int(min(x_) * W) - 15
@@ -133,7 +118,7 @@ while True:
 
             cv2.putText(
                 img=frame,
-                text=interface_signs_dict[prediction],
+                text=sign_name,
                 org=(x1, y1 - 10),
                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                 fontScale=1,
