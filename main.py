@@ -32,7 +32,7 @@ signs_dict = {
     '6': 'Rock',
     '7': 'YessPeace sign',
     '8': 'Shaka',
-    '9': 'Fuck',
+    '9': 'Fuck you',
     '10': 'Spock',
     '11': 'West Coast',
     '12': 'East Coast',
