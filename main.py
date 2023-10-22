@@ -9,8 +9,7 @@ from functions import recognize_hand_sign, get_capture
 # importing the ML model
 model = pickle.load(open('model/model.pickle', 'rb'))
 
-camera_num = 0
-cap = get_capture(camera_num)
+cap, camera_num = get_capture()
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(False)
@@ -93,14 +92,10 @@ while True:
     pressed_key = cv2.waitKey(1)
 
     if pressed_key in [44, 60]:
-        camera_num -= 1
-        cap = get_capture(camera_num)
-        print('Camera changed:', camera_num)
+        cap, camera_num = get_capture(camera_num, -1)
 
     elif pressed_key in [46, 62]:
-        camera_num += 1
-        cap = get_capture(camera_num)
-        print('Camera changed:', camera_num)
+        cap, camera_num = get_capture(camera_num, 1)
 
     elif pressed_key == 27:  # exit on ESC
         break
