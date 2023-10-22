@@ -4,16 +4,13 @@ import time
 import cv2
 import mediapipe as mp
 
-from functions import recognize_hand_sign
+from functions import recognize_hand_sign, get_capture
 
 # importing the ML model
 model = pickle.load(open('model/model.pickle', 'rb'))
 
-# connecting the camera
-cap = cv2.VideoCapture(1)  # for no reason my webcam is by number 6
-cap.set(3, 640)  # Width
-cap.set(4, 480)  # Length
-cap.set(10, 100)  # Brightness
+camera_num = 0
+cap = get_capture(camera_num)
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(False)
@@ -92,7 +89,18 @@ while True:
 
     # showing the image
     cv2.imshow('python', frame)
-    if cv2.waitKey(20) == 27:  # exit on ESC
+
+    pressed_key = cv2.waitKey(1)
+
+    if pressed_key == 60:
+        camera_num -= 1
+        cap = get_capture(camera_num)
+
+    elif pressed_key == 62:
+        camera_num += 1
+        cap = get_capture(camera_num)
+
+    elif pressed_key == 27:  # exit on ESC
         break
 
 cv2.destroyWindow("python")
