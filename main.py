@@ -43,9 +43,9 @@ while True:
 
         # getting data from hand_landmarks
         for hand_landmarks in results.multi_hand_landmarks:
-            prediction, sign_name, x_, y_ = recognize_hand_sign(frame, model, hand_landmarks)
+            prediction, sign_name, probability, x_, y_ = recognize_hand_sign(frame, model, hand_landmarks)
 
-            print(f'Predicted sign: code: "{prediction}", name: "{sign_name}"')
+            print(f'Predicted sign: code: "{prediction}", name: "{sign_name}", probability: "{probability}"')
 
             # making the interface
             x1 = int(min(x_) * W) - 15
@@ -63,7 +63,7 @@ while True:
 
             cv2.putText(
                 img=frame,
-                text=sign_name,
+                text=f"{sign_name} - {probability}",
                 org=(x1, y1 - 10),
                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                 fontScale=1,
@@ -92,13 +92,15 @@ while True:
 
     pressed_key = cv2.waitKey(1)
 
-    if pressed_key == 60:
+    if pressed_key in [44, 60]:
         camera_num -= 1
         cap = get_capture(camera_num)
+        print('Camera changed:', camera_num)
 
-    elif pressed_key == 62:
+    elif pressed_key in [46, 62]:
         camera_num += 1
         cap = get_capture(camera_num)
+        print('Camera changed:', camera_num)
 
     elif pressed_key == 27:  # exit on ESC
         break
