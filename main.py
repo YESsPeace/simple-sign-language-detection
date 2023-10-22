@@ -57,7 +57,7 @@ while True:
             cv2.rectangle(
                 frame,
                 (x1, y1), (x2, y2),
-                color=(48, 186, 143)[::-1],
+                color=(203, 65, 84)[::-1],
                 thickness=3,
             )
 
@@ -67,8 +67,8 @@ while True:
                 org=(x1, y1 - 10),
                 fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                 fontScale=1,
-                color=(48, 186, 143)[::-1],
-                thickness=2,
+                color=(203, 65, 84)[::-1],
+                thickness=1,
                 lineType=cv2.LINE_AA
             )
 
