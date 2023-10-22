@@ -6,7 +6,7 @@ import mediapipe as mp
 import numpy as np
 
 # importing the ML model
-model = pickle.load(open('model.pickle', 'rb'))
+model = pickle.load(open('model/model.pickle', 'rb'))
 
 # connecting the camera
 cap = cv2.VideoCapture(6)  # for no reason my webcam is by number 6
