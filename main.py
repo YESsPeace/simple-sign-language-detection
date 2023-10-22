@@ -30,11 +30,33 @@ while True:
     cv2.putText(
         img=frame,
         text='Wanna quit? Press "ESC"!',
-        org=(100, 50),
+        org=(225, 25),
         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-        fontScale=1.3,
+        fontScale=1,
         color=(203, 65, 84)[::-1],
-        thickness=3,
+        thickness=2,
+        lineType=cv2.LINE_AA
+    )
+
+    cv2.putText(
+        img=frame,
+        text=f'Camera: {camera_num}',
+        org=(10, 60),
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+        fontScale=0.75,
+        color=(203, 65, 84)[::-1],
+        thickness=1,
+        lineType=cv2.LINE_AA
+    )
+
+    cv2.putText(
+        img=frame,
+        text=f'to change "<" and ">"',
+        org=(10, 80),
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+        fontScale=0.7,
+        color=(203, 65, 84)[::-1],
+        thickness=1,
         lineType=cv2.LINE_AA
     )
 
