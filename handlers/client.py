@@ -1,9 +1,15 @@
+import requests
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram.dispatcher.filters import Text
 
+import numpy as np
+import cv2
+from io import BytesIO
+
 from config import dp, bot, model
+from functions import recognize_sign_from_img
 from keyboards import kb_client, kb_info
 
 
@@ -29,6 +35,37 @@ async def command_start(message: types.Message):
     )
 
 
+@dp.message_handler(content_types=['photo'])
+async def handle_photo(message: types.Message):
+    print('Started photo handle')
+    photo = message.photo[3]
+
+    # Получаем изображение как байтовый объект
+    file_id = photo.file_id
+    image_url = f"https://api.telegram.org/bot{bot._token}/getFile?file_id={file_id}"
+    response = requests.get(image_url)
+    image_data = BytesIO(response.content)
+    print('Получили изображение как байтовый объект')
+
+    # Преобразовываем байтовый объект в изображение с помощью OpenCV
+    image = cv2.imdecode(np.frombuffer(image_data.read(), np.uint8), cv2.IMREAD_COLOR)
+    print('Преобразовали байтовый объект в изображение с помощью OpenCV')
+
+    # Обработка изображения
+    image = await recognize_sign_from_img(image, model)
+    print('Обработали изображение')
+
+    # Преобразование обработанного изображения в байты для отправки
+    ret, image_data = cv2.imencode(".jpg", image)
+    image_bytes = BytesIO(image_data.tobytes())
+    print('Преобразовали обработанное изображение в байты для отправки')
+
+    # Отправка обработанного изображения в ответ на сообщение
+    await bot.send_photo(message.chat.id, photo=image_bytes)
+    print('Выслали изображение')
+
+
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start'])
     dp.register_message_handler(command_start, commands=['help', 'info'])
+    dp.register_message_handler(handle_photo, content_types=['photo'])
