@@ -37,32 +37,31 @@ async def command_start(message: types.Message):
 
 @dp.message_handler(content_types=['photo'])
 async def handle_photo(message: types.Message):
-    print('Started photo handle')
-    photo = message.photo[3]
+    try:
+        photo = message.photo[3]
 
-    # Получаем изображение как байтовый объект
-    file_id = photo.file_id
-    image_url = f"https://api.telegram.org/bot{bot._token}/getFile?file_id={file_id}"
-    response = requests.get(image_url)
-    image_data = BytesIO(response.content)
-    print('Получили изображение как байтовый объект')
+        # Получаем изображение как байтовый объект
+        file_id = photo.file_id
+        image_url = f"https://api.telegram.org/bot{bot._token}/getFile?file_id={file_id}"
+        response = requests.get(image_url)
+        image_path = response.json()['result']['file_path']
+        image_data = BytesIO(requests.get(f"https://api.telegram.org/file/bot{bot._token}/{image_path}").content)
 
-    # Преобразовываем байтовый объект в изображение с помощью OpenCV
-    image = cv2.imdecode(np.frombuffer(image_data.read(), np.uint8), cv2.IMREAD_COLOR)
-    print('Преобразовали байтовый объект в изображение с помощью OpenCV')
+        # Преобразовываем байтовый объект в изображение с помощью OpenCV
+        image = cv2.imdecode(np.frombuffer(image_data.read(), np.uint8), cv2.IMREAD_COLOR)
 
-    # Обработка изображения
-    image = await recognize_sign_from_img(image, model)
-    print('Обработали изображение')
+        # Обработка изображения
+        image = recognize_sign_from_img(image, model)
 
-    # Преобразование обработанного изображения в байты для отправки
-    ret, image_data = cv2.imencode(".jpg", image)
-    image_bytes = BytesIO(image_data.tobytes())
-    print('Преобразовали обработанное изображение в байты для отправки')
+        # Преобразование обработанного изображения в байты для отправки
+        ret, image_data = cv2.imencode(".jpg", image)
+        image_bytes = BytesIO(image_data.tobytes())
 
-    # Отправка обработанного изображения в ответ на сообщение
-    await bot.send_photo(message.chat.id, photo=image_bytes)
-    print('Выслали изображение')
+        # Отправка обработанного изображения в ответ на сообщение
+        await bot.send_photo(message.chat.id, photo=image_bytes)
+
+    except Exception as e:
+        print(f"Ошибка: {e}")
 
 
 def register_handlers_client(dp: Dispatcher):
