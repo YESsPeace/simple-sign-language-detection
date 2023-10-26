@@ -31,13 +31,7 @@ def get_data_from_hand_landmarks(frame, hand_landmarks):
     x_ = []
     y_ = []
 
-    mp_drawing.draw_landmarks(
-        frame,  # image to draw
-        hand_landmarks,  # model output
-        mp_hands.HAND_CONNECTIONS,  # hand connections
-        mp_drawing_styles.get_default_hand_landmarks_style(),
-        mp_drawing_styles.get_default_hand_connections_style(),
-    )
+
 
     # getting all coordinates of hands landmarks
     for i in range(len(hand_landmarks.landmark)):

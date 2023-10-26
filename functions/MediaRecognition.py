@@ -25,6 +25,14 @@ def recognize_sign_from_img(img, model):
             x2 = int(max(x_) * W) + ((H + W) // 74)
             y2 = int(max(y_) * H) + ((H + W) // 74)
 
+            mp_drawing.draw_landmarks(
+                img,  # image to draw
+                hand_landmarks,  # model output
+                mp_hands.HAND_CONNECTIONS,  # hand connections
+                mp_drawing.DrawingSpec(color=(203, 65, 84)[::-1], thickness=((H + W) // 560), circle_radius=((H + W) // 560)),  # hand points
+                mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=((H + W) // 560), circle_radius=((H + W) // 560)),  # hand lines
+            )
+
             cv2.rectangle(
                 img,
                 (x1, y1), (x2, y2),
