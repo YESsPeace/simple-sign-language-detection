@@ -5,3 +5,4 @@ numpy==1.26.0
 pandas
 matplotlib
 aiogram==2.25.2
+requests==2.31.0

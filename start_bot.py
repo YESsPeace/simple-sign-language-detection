@@ -2,12 +2,12 @@ from aiogram.utils import executor
 
 from config import dp
 
+from handlers import client
+
 
 async def on_startup(_):
     print('Bot started')
 
-
-from handlers import client
 
 client.register_handlers_client(dp)
 
