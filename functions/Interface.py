@@ -11,8 +11,8 @@ mp_drawing_styles = mp.solutions.drawing_styles
 def draw_hand_landmarks(img, hand_landmarks, sign_name, similarity, x_, y_):
     H, W, _ = img.shape
 
-    x = W * H  # image resolution
-    x_standard = 640 * 480
+    x = W + H
+    x_standard = 640 + 480
 
     thickness_dict = {
         'hand_landmarks_thickness': max(int(np.round((x * 2) / x_standard, 0)), 2),
