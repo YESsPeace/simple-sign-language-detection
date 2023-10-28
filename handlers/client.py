@@ -25,6 +25,7 @@ async def command_start(message: types.Message):
         reply_markup=kb_client
     )
 
+    await bot.send_video(message.chat.id, video='https://i.imgur.com/ivDfNgl.gif')
 
 @dp.message_handler(commands=['help', 'info'])
 async def command_start(message: types.Message):
