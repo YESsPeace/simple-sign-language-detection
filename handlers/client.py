@@ -20,18 +20,24 @@ class FSMClient(StatesGroup):
 @dp.message_handler(commands=['start'])
 async def command_start(message: types.Message):
     await message.answer(
-        'Привет, я бот, который распознает жесты руки с картинки или кружочка до. Просто вышли мне фотокарточку или '
-        'кружочек с жестом руки.',
+        'Привет, я бот, который распознает жесты руки с картинки. Просто вышли мне фотокарточку с жестом руки.',
         reply_markup=kb_client
     )
 
     await bot.send_video(message.chat.id, video='https://i.imgur.com/ivDfNgl.gif')
 
-@dp.message_handler(commands=['help', 'info'])
-async def command_start(message: types.Message):
+
+@dp.message_handler(commands=['help'])
+async def command_help(message: types.Message):
     await message.answer(
-        'Это бот для взаимодействия с нейросетею, которая расспознаёт жесты рук. Данную нейросеть разработал я, '
-        'Эрназаров Дамир. Подробнее о мой деятельности на сайте',
+        'Это бот для взаимодействия с нейросетею, которая расспознаёт жесты рук. Бот реагирует только на картинки и распознаёт на них знаки. Просто вышлите ему картинку, и в ответном сообщении бот выдаст картинку с распознанным знаком.',
+        reply_markup=kb_client
+    )
+
+@dp.message_handler(commands=['info'])
+async def command_info(message: types.Message):
+    await message.answer(
+        'Это бот для взаимодействия с нейросетею, которая расспознаёт жесты рук. ',
         reply_markup=kb_info
     )
 
@@ -67,5 +73,6 @@ async def handle_photo(message: types.Message):
 
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start'])
-    dp.register_message_handler(command_start, commands=['help', 'info'])
+    dp.register_message_handler(command_info, commands=['info'])
+    dp.register_message_handler(command_help, commands=['help'])
     dp.register_message_handler(handle_photo, content_types=['photo'])
