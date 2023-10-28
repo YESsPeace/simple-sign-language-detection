@@ -1,15 +1,14 @@
+from io import BytesIO
+
+import cv2
+import numpy as np
 import requests
 from aiogram import types, Dispatcher
-from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import StatesGroup, State
-from aiogram.dispatcher.filters import Text
-
-import numpy as np
-import cv2
-from io import BytesIO
 
 from config import dp, bot, model
 from functions import recognize_sign_from_img
+from bucket import media_without_photo
 from keyboards import kb_client, kb_info
 
 
@@ -33,6 +32,7 @@ async def command_help(message: types.Message):
         'Это бот для взаимодействия с нейросетею, которая расспознаёт жесты рук. Бот реагирует только на картинки и распознаёт на них знаки. Просто вышлите ему картинку, и в ответном сообщении бот выдаст картинку с распознанным знаком.',
         reply_markup=kb_client
     )
+
 
 @dp.message_handler(commands=['info'])
 async def command_info(message: types.Message):
@@ -71,8 +71,17 @@ async def handle_photo(message: types.Message):
         print(f"Ошибка: {e}")
 
 
+@dp.message_handler(content_types=media_without_photo)
+async def handle_other_media(message: types.Message):
+    await message.answer(
+        'Нет-нет-нет, я могу распознать жест только с фото, сорри.',
+        reply_markup=kb_client
+    )
+
+
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start'])
     dp.register_message_handler(command_info, commands=['info'])
     dp.register_message_handler(command_help, commands=['help'])
     dp.register_message_handler(handle_photo, content_types=['photo'])
+    dp.register_message_handler(handle_other_media, content_types=['photo'])
