@@ -31,8 +31,6 @@ def get_data_from_hand_landmarks(frame, hand_landmarks):
     x_ = []
     y_ = []
 
-
-
     # getting all coordinates of hands landmarks
     for i in range(len(hand_landmarks.landmark)):
         x = hand_landmarks.landmark[i].x

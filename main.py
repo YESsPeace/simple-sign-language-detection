@@ -75,6 +75,16 @@ while True:
             x2 = int(max(x_) * W) + 15
             y2 = int(max(y_) * H) + 15
 
+            mp_drawing.draw_landmarks(
+                frame,  # image to draw
+                hand_landmarks,  # model output
+                mp_hands.HAND_CONNECTIONS,  # hand connections
+                mp_drawing.DrawingSpec(color=(203, 65, 84)[::-1], thickness=2,
+                                       circle_radius=2),  # hand points
+                mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2,
+                                       circle_radius=2),  # hand lines
+            )
+
             cv2.rectangle(
                 frame,
                 (x1, y1), (x2, y2),
