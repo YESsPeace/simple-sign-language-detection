@@ -4,7 +4,7 @@ import time
 import cv2
 import mediapipe as mp
 
-from functions import recognize_hand_sign, get_capture
+from functions import recognize_hand_sign, get_capture, draw_hand_landmarks
 
 # importing the ML model
 model = pickle.load(open('model/model.pickle', 'rb'))
@@ -64,9 +64,9 @@ while True:
 
         # getting data from hand_landmarks
         for hand_landmarks in results.multi_hand_landmarks:
-            prediction, sign_name, probability, x_, y_ = recognize_hand_sign(frame, model, hand_landmarks)
+            prediction, sign_name, similarity, x_, y_ = recognize_hand_sign(frame, model, hand_landmarks)
 
-            print(f'Predicted sign: code: "{prediction}", name: "{sign_name}", probability: "{probability}"')
+            print(f'Predicted sign: code: "{prediction}", name: "{sign_name}", similarity: "{similarity}"')
 
             # making the interface
             x1 = int(min(x_) * W) - 15
@@ -75,33 +75,7 @@ while True:
             x2 = int(max(x_) * W) + 15
             y2 = int(max(y_) * H) + 15
 
-            mp_drawing.draw_landmarks(
-                frame,  # image to draw
-                hand_landmarks,  # model output
-                mp_hands.HAND_CONNECTIONS,  # hand connections
-                mp_drawing.DrawingSpec(color=(203, 65, 84)[::-1], thickness=2,
-                                       circle_radius=2),  # hand points
-                mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2,
-                                       circle_radius=2),  # hand lines
-            )
-
-            cv2.rectangle(
-                frame,
-                (x1, y1), (x2, y2),
-                color=(203, 65, 84)[::-1],
-                thickness=3,
-            )
-
-            cv2.putText(
-                img=frame,
-                text=f"{sign_name} - {probability}",
-                org=(x1, y1 - 10),
-                fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                fontScale=1,
-                color=(203, 65, 84)[::-1],
-                thickness=1,
-                lineType=cv2.LINE_AA
-            )
+            frame = draw_hand_landmarks(frame, hand_landmarks, sign_name, similarity, x1, y1, x2, y2)
 
     # getting the framerate
     current_time = time.time()

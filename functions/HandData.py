@@ -61,7 +61,7 @@ def recognize_hand_sign(img, model, hand_landmarks):
     prediction = model.predict(inputs)[0]
     sign_name = signs_dict[prediction.split('_')[0]]
 
-    probability = model.predict_proba(inputs).max()
-    probability = np.round(probability, 2)
+    similarity = model.predict_proba(inputs).max()
+    similarity = np.round(similarity, 2)
 
-    return prediction, sign_name, probability, x_, y_
+    return prediction, sign_name, similarity, x_, y_
