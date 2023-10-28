@@ -68,14 +68,7 @@ while True:
 
             print(f'Predicted sign: code: "{prediction}", name: "{sign_name}", similarity: "{similarity}"')
 
-            # making the interface
-            x1 = int(min(x_) * W) - 15
-            y1 = int(min(y_) * H) - 15
-
-            x2 = int(max(x_) * W) + 15
-            y2 = int(max(y_) * H) + 15
-
-            frame = draw_hand_landmarks(frame, hand_landmarks, sign_name, similarity, x1, y1, x2, y2)
+            frame = draw_hand_landmarks(frame, hand_landmarks, sign_name, similarity, x_, y_)
 
     # getting the framerate
     current_time = time.time()
