@@ -11,6 +11,9 @@ from functions import recognize_sign_from_img
 from bucket import media_without_photo
 from keyboards import kb_client, kb_info
 
+# Максимальный допустимый размер фотографии в байтах
+MAX_PHOTO_SIZE_BYTES = 5 * 1024 * 1024  # 5 МБ
+
 
 class FSMClient(StatesGroup):
     solution = State()
@@ -49,6 +52,14 @@ async def handle_photo(message: types.Message):
 
         # Получаем изображение как байтовый объект
         file_id = photo.file_id
+
+        file_info = await bot.get_file(file_id)
+        file_size = file_info.file_size
+
+        if file_size > MAX_PHOTO_SIZE_BYTES:
+            await message.answer("Сорри, но ваше изображение слишком большое. Максимальный объем - 5 МБ.")
+            breakpoint()
+
         image_url = f"https://api.telegram.org/bot{bot._token}/getFile?file_id={file_id}"
         response = requests.get(image_url)
         image_path = response.json()['result']['file_path']
@@ -82,7 +93,7 @@ async def handle_other_media(message: types.Message):
 @dp.message_handler(content_types=['text'])
 async def handle_any_text(message: types.Message):
     await message.answer(
-        'Cорри, текст не понимаю, только команды.',
+        'Сорри, текст не понимаю, только команды.',
         reply_markup=kb_client
     )
 
