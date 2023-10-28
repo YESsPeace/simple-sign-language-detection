@@ -79,9 +79,18 @@ async def handle_other_media(message: types.Message):
     )
 
 
+@dp.message_handler(content_types=['text'])
+async def handle_any_text(message: types.Message):
+    await message.answer(
+        'Cорри, текст не понимаю, только команды.',
+        reply_markup=kb_client
+    )
+
+
 def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start'])
     dp.register_message_handler(command_info, commands=['info'])
     dp.register_message_handler(command_help, commands=['help'])
     dp.register_message_handler(handle_photo, content_types=['photo'])
-    dp.register_message_handler(handle_other_media, content_types=['photo'])
+    dp.register_message_handler(handle_other_media, content_types=media_without_photo)
+    dp.register_message_handler(handle_any_text, content_types=['text'])
