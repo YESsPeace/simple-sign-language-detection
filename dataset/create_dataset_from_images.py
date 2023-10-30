@@ -25,7 +25,7 @@ for dir_ in os.listdir(DATA_DIR):
 
         if results.multi_hand_landmarks:
             for hand_landmarks in results.multi_hand_landmarks:
-                img, data_aux = get_data_from_hand_landmarks(img, hand_landmarks)
+                img, data_aux, x_, y_ = get_data_from_hand_landmarks(img, hand_landmarks)
 
                 data.append(data_aux)
                 labels.append(dir_)
