@@ -12,7 +12,7 @@ from bucket import media_without_photo
 from keyboards import kb_client, kb_info
 
 # Максимальный допустимый размер фотографии в байтах
-MAX_PHOTO_SIZE_BYTES = 5 * 1024 * 1024  # 5 МБ
+MAX_PHOTO_SIZE_BYTES = 512 * 1024  # 512 КБ
 
 
 class FSMClient(StatesGroup):
@@ -48,7 +48,7 @@ async def command_info(message: types.Message):
 @dp.message_handler(content_types=['photo'])
 async def handle_photo(message: types.Message):
     try:
-        photo = message.photo[3]
+        photo = message.photo[2]
 
         # Получаем изображение как байтовый объект
         file_id = photo.file_id
@@ -57,7 +57,7 @@ async def handle_photo(message: types.Message):
         file_size = file_info.file_size
 
         if file_size > MAX_PHOTO_SIZE_BYTES:
-            await message.answer("Сорри, но ваше изображение слишком большое. Максимальный объем - 5 МБ.")
+            await message.answer("Сорри, но ваше изображение слишком большое. Максимальный объем - 512 КБ.")
             breakpoint()
 
         image_url = f"https://api.telegram.org/bot{bot._token}/getFile?file_id={file_id}"
