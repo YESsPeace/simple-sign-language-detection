@@ -40,7 +40,7 @@ async def command_help(message: types.Message):
 @dp.message_handler(commands=['info'])
 async def command_info(message: types.Message):
     await message.answer(
-        'Это бот для взаимодействия с нейросетею, которая расспознаёт жесты рук. ',
+        'Это бот для взаимодействия с нейросетею, которая расспознаёт жесты рук, подробнее на Github. Данную нейросеть разработал я, Эрназаров Дамир. Подробнее о мой деятельности на сайте.',
         reply_markup=kb_info
     )
 
