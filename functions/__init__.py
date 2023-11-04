@@ -1,4 +1,4 @@
 from functions.HandData import get_data_from_hand_landmarks, recognize_hand_sign
-from functions.Camera import Camera
+from functions.Camera import Camera, button_handler
 from functions.Interface import draw_hand_landmarks
 from functions.MediaRecognition import recognize_sign_from_img

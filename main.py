@@ -4,7 +4,7 @@ import time
 import cv2
 import mediapipe as mp
 
-from functions import recognize_hand_sign, Camera, draw_hand_landmarks
+from functions import recognize_hand_sign, Camera, draw_hand_landmarks, button_handler
 
 # importing the ML model
 model = pickle.load(open('model/model.pickle', 'rb'))
@@ -102,24 +102,12 @@ while True:
 
     pressed_key = cv2.waitKey(1)
 
-    # change camera to one previous on "<"
-    if pressed_key in [44, 60]:
-        cap, camera_num = cam.change_to_the_previous_one()
-        print('Camera changed:', camera_num)
-
-    # change camera to one next on ">"
-    elif pressed_key in [46, 62]:
-        cap, camera_num = cam.change_to_the_next_one()
-        print('Camera changed:', camera_num)
-
-    # change orientation on "/"
-    elif pressed_key in [47, 63]:
-        cap.release()
-        cap, camera_num = cam.change_orientation()
-
     # exit on ESC
-    elif pressed_key == 27:
+    if pressed_key == 27:
         break
+
+    else:
+        cap, camera_num = button_handler(pressed_key, cam, cap, camera_num)
 
 cv2.destroyWindow("python")
 cap.release()

@@ -38,3 +38,22 @@ class Camera:
             self.orientation = 'vertical'
 
         return self.get_capture()
+
+
+def button_handler(ascii_code, cam, cap, camera_num):
+    # change camera to one previous on "<"
+    if ascii_code in [44, 60]:
+        cap, camera_num = cam.change_to_the_previous_one()
+        print('Camera changed:', camera_num)
+
+    # change camera to one next on ">"
+    elif ascii_code in [46, 62]:
+        cap, camera_num = cam.change_to_the_next_one()
+        print('Camera changed:', camera_num)
+
+    # change orientation on "/"
+    elif ascii_code in [47, 63]:
+        cap.release()
+        cap, camera_num = cam.change_orientation()
+
+    return cap, camera_num
