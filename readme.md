@@ -15,7 +15,7 @@ The project is to create a hand gesture classification model
   in [project notion](https://yesspeace.notion.site/Simple-sign-language-recognition-project-bae7d7d7f5a04b5dbc916ca165383a7d?pvs=4)
   but in Russian language
 
-![Showing most of the signs](https://i.imgur.com/ivDfNgl.gif)
+[![GIF Showing most of the signs](https://i.imgur.com/EJMMXM6.png)](https://i.imgur.com/ivDfNgl.gif)
 
 - The dataset contains signs such as:
     - Like 👍🏿
