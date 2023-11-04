@@ -14,7 +14,7 @@ cam = Camera()
 cam.camera_num = 8
 cap, camera_num = cam.get_capture()
 
-for j in range(14, 15):
+for j in range(14):
     if not os.path.exists(os.path.join(DATA_DIR, str(j))):
         os.makedirs(os.path.join(DATA_DIR, str(j)))
 
@@ -41,7 +41,7 @@ for j in range(14, 15):
 
         pressed_key = cv2.waitKey(1)
 
-        if pressed_key == ord('q'):
+        if pressed_key == ord('r'):
             break
 
         else:
