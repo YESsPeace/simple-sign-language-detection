@@ -1,7 +1,12 @@
+import pickle
+
 import cv2
 import mediapipe as mp
 
 import numpy as np
+
+horizontally_imgs_model = pickle.load(open('model/model.pickle', 'rb'))
+vertically_imgs_model = pickle.load(open('model/model_vertically_imgs.pickle', 'rb'))
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -22,7 +27,6 @@ signs_dict = {
     '11': 'West Coast',
     '12': 'East Coast',
     '13': 'Crips',
-    '14': 'Bloods',
 }
 
 
@@ -49,7 +53,15 @@ def get_data_from_hand_landmarks(frame, hand_landmarks):
     return frame, data_aux, x_, y_
 
 
-def recognize_hand_sign(img, model, hand_landmarks):
+def recognize_hand_sign(img, hand_landmarks):
+    H, W, _ = img.shape
+
+    if H > W:
+        model = vertically_imgs_model
+
+    else:
+        model = horizontally_imgs_model
+
     img, inputs, x_, y_ = get_data_from_hand_landmarks(img, hand_landmarks)
 
     # preparing data for the model

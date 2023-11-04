@@ -7,9 +7,9 @@ import mediapipe as mp
 from functions import recognize_hand_sign, Camera, draw_hand_landmarks, button_handler, draw_text
 
 # importing the ML model
-model = pickle.load(open('model/model.pickle', 'rb'))
 
 cam = Camera()
+cam.camera_num = 8
 cap, camera_num = cam.get_capture()
 
 mp_hands = mp.solutions.hands
@@ -45,7 +45,7 @@ while True:
 
         # getting data from hand_landmarks
         for hand_landmarks in results.multi_hand_landmarks:
-            prediction, sign_name, similarity, x_, y_ = recognize_hand_sign(frame, model, hand_landmarks)
+            prediction, sign_name, similarity, x_, y_ = recognize_hand_sign(frame, hand_landmarks)
 
             print(f'Predicted sign: code: "{prediction}", name: "{sign_name}", similarity: "{similarity}"')
 
