@@ -4,7 +4,7 @@ import time
 import cv2
 import mediapipe as mp
 
-from functions import recognize_hand_sign, Camera, draw_hand_landmarks, button_handler
+from functions import recognize_hand_sign, Camera, draw_hand_landmarks, button_handler, draw_text
 
 # importing the ML model
 model = pickle.load(open('model/model.pickle', 'rb'))
@@ -39,38 +39,7 @@ while True:
         lineType=cv2.LINE_AA
     )
 
-    cv2.putText(
-        img=frame,
-        text=f'Camera: {camera_num}',
-        org=(10, 50),
-        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-        fontScale=0.75,
-        color=(203, 65, 84)[::-1],
-        thickness=1,
-        lineType=cv2.LINE_AA
-    )
-
-    cv2.putText(
-        img=frame,
-        text=f'to change camera "<" and ">"',
-        org=(10, 80),
-        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-        fontScale=0.7,
-        color=(203, 65, 84)[::-1],
-        thickness=1,
-        lineType=cv2.LINE_AA
-    )
-
-    cv2.putText(
-        img=frame,
-        text='to change orientation "/"',
-        org=(10, 110),
-        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-        fontScale=0.7,
-        color=(203, 65, 84)[::-1],
-        thickness=1,
-        lineType=cv2.LINE_AA
-    )
+    frame = draw_text(frame, camera_num)
 
     if results.multi_hand_landmarks:  # if we have any hands
 

@@ -2,7 +2,7 @@ import os
 
 import cv2
 
-from functions import Camera, button_handler
+from functions import Camera, button_handler, draw_text
 
 DATA_DIR = '../data'
 if not os.path.exists(DATA_DIR):
@@ -35,38 +35,7 @@ for j in range(14, 15):
             lineType=cv2.LINE_AA
         )
 
-        cv2.putText(
-            img=frame,
-            text=f'Camera: {camera_num}',
-            org=(10, 50),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=0.75,
-            color=(203, 65, 84)[::-1],
-            thickness=1,
-            lineType=cv2.LINE_AA
-        )
-
-        cv2.putText(
-            img=frame,
-            text=f'to change camera "<" and ">"',
-            org=(10, 80),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=0.7,
-            color=(203, 65, 84)[::-1],
-            thickness=1,
-            lineType=cv2.LINE_AA
-        )
-
-        cv2.putText(
-            img=frame,
-            text='to change orientation "/"',
-            org=(10, 110),
-            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-            fontScale=0.7,
-            color=(203, 65, 84)[::-1],
-            thickness=1,
-            lineType=cv2.LINE_AA
-        )
+        frame = draw_text(frame, camera_num)
 
         cv2.imshow('frame', frame)
 

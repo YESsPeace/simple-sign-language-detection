@@ -58,3 +58,40 @@ def draw_hand_landmarks(img, hand_landmarks, sign_name, similarity, x_, y_):
     )
 
     return img
+
+
+def draw_text(img, camera_num='???'):
+    cv2.putText(
+        img=img,
+        text=f'Camera: {camera_num}',
+        org=(10, 50),
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+        fontScale=0.75,
+        color=(203, 65, 84)[::-1],
+        thickness=1,
+        lineType=cv2.LINE_AA
+    )
+
+    cv2.putText(
+        img=img,
+        text=f'to change camera "<" and ">"',
+        org=(10, 80),
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+        fontScale=0.7,
+        color=(203, 65, 84)[::-1],
+        thickness=1,
+        lineType=cv2.LINE_AA
+    )
+
+    cv2.putText(
+        img=img,
+        text='to change orientation "/"',
+        org=(10, 110),
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+        fontScale=0.7,
+        color=(203, 65, 84)[::-1],
+        thickness=1,
+        lineType=cv2.LINE_AA
+    )
+
+    return img
