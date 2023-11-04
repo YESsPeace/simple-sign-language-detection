@@ -4,12 +4,13 @@ import time
 import cv2
 import mediapipe as mp
 
-from functions import recognize_hand_sign, get_capture, draw_hand_landmarks
+from functions import recognize_hand_sign, Camera, draw_hand_landmarks
 
 # importing the ML model
 model = pickle.load(open('model/model.pickle', 'rb'))
 
-cap, camera_num = get_capture()
+cam = Camera()
+cap, camera_num = cam.get_capture()
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(False)
@@ -41,7 +42,7 @@ while True:
     cv2.putText(
         img=frame,
         text=f'Camera: {camera_num}',
-        org=(10, 60),
+        org=(10, 50),
         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
         fontScale=0.75,
         color=(203, 65, 84)[::-1],
@@ -51,8 +52,19 @@ while True:
 
     cv2.putText(
         img=frame,
-        text=f'to change "<" and ">"',
+        text=f'to change camera "<" and ">"',
         org=(10, 80),
+        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+        fontScale=0.7,
+        color=(203, 65, 84)[::-1],
+        thickness=1,
+        lineType=cv2.LINE_AA
+    )
+
+    cv2.putText(
+        img=frame,
+        text='to change orientation "/"',
+        org=(10, 110),
         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
         fontScale=0.7,
         color=(203, 65, 84)[::-1],
@@ -90,13 +102,23 @@ while True:
 
     pressed_key = cv2.waitKey(1)
 
+    # change camera to one previous on "<"
     if pressed_key in [44, 60]:
-        cap, camera_num = get_capture(camera_num, -1)
+        cap, camera_num = cam.change_to_the_previous_one()
+        print('Camera changed:', camera_num)
 
+    # change camera to one next on ">"
     elif pressed_key in [46, 62]:
-        cap, camera_num = get_capture(camera_num, 1)
+        cap, camera_num = cam.change_to_the_next_one()
+        print('Camera changed:', camera_num)
 
-    elif pressed_key == 27:  # exit on ESC
+    # change orientation on "/"
+    elif pressed_key in [47, 63]:
+        cap.release()
+        cap, camera_num = cam.change_orientation()
+
+    # exit on ESC
+    elif pressed_key == 27:
         break
 
 cv2.destroyWindow("python")
