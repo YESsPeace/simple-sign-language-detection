@@ -69,7 +69,7 @@ async def handle_photo(message: types.Message):
         image = cv2.imdecode(np.frombuffer(image_data.read(), np.uint8), cv2.IMREAD_COLOR)
 
         # Обработка изображения
-        image = recognize_sign_from_img(image, model)
+        image = recognize_sign_from_img(image)
 
         # Преобразование обработанного изображения в байты для отправки
         ret, image_data = cv2.imencode(".jpg", image)
